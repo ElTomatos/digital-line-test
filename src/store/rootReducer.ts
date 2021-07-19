@@ -6,12 +6,12 @@ import { combineReducers } from "redux";
 /**
  * Reducers
  */
-import { tablesReducer } from "../features/tables/tablesReducer";
+import { tablesReducer } from "../reducers/tablesReducer";
 
 /**
  * Root state
  */
-import { TablesModel } from "../features/tables/tablesModel";
+import { TablesModel } from "../types/tables";
 
 export type RootState = {
   tables: TablesModel;

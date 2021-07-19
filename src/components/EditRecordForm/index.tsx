@@ -9,12 +9,16 @@ import Select from "react-select";
  */
 import { useDispatch } from "react-redux";
 import { useSelector } from "../../store/hooks";
-import { addTableRecord, editTableRecord } from "../../actions/creators";
+import {
+  addTableRecord,
+  editTableCloneRecord,
+  editTableRecord,
+} from "../../actions/creators";
 
 /**
  * Helpers
  */
-import { createDefaultTableRowData } from "../../features/tables/tablesReducer";
+import { createDefaultTableRowData } from "../../utils";
 
 /**
  * Selectors
@@ -24,7 +28,7 @@ import { tablesModalSelector } from "../../selectors";
 /**
  * Typings
  */
-import { TableData } from "../../features/tables/tablesModel";
+import { TableData } from "../../types/tables";
 
 type TProps = {};
 
@@ -34,65 +38,42 @@ const options = [
   { value: "vanilla", label: "Vanilla" },
 ];
 
-/**
- * Expo
- */
 const EditRecordForm: React.FC<TProps> = () => {
-  /**
-   * Form values state
-   */
   const [formData, setFormData] = useState<TableData>(
     createDefaultTableRowData()
   );
 
-  /**
-   * Redux state selector
-   */
   const { data, rowId, tableId } = useSelector(tablesModalSelector);
 
-  /**
-   * Redux dispatch
-   */
   const dispatch = useDispatch();
 
-  /**
-   * Set values from redux to form
-   */
   useEffect(() => {
     setFormData(data);
   }, [data]);
 
-  /**
-   * Submit handler
-   */
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (rowId) {
-      dispatch(editTableRecord(tableId, rowId, formData));
+      if (tableId) {
+        dispatch(editTableCloneRecord(tableId, rowId, formData));
+      } else {
+        dispatch(editTableRecord(rowId, formData));
+      }
     } else {
-      dispatch(addTableRecord(tableId, formData));
+      dispatch(addTableRecord(formData));
     }
   };
 
-  /**
-   * Input change handler
-   */
   const handleChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = target;
     setFormData({ ...formData, [name]: value });
   };
 
-  /**
-   * Select change handler
-   */
   const handleCityChange = (e: { value: string; label: string } | null) => {
     const city = e ? e.value : "";
     setFormData({ ...formData, city });
   };
 
-  /**
-   * JSX
-   */
   return (
     <form className="form" onSubmit={handleSubmit}>
       <div className="form__item">

@@ -17,27 +17,15 @@ import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 /**
  * Typings
  */
-type TProps = { tableId: string };
+type TProps = { tableId?: string };
 
-/**
- * Expo
- */
 const TableHeadActions: React.FC<TProps> = ({ tableId }) => {
-  /**
-   * Redux dispatch
-   */
   const dispatch = useDispatch();
 
-  /**
-   * Click handler
-   */
   const clickHandler = () => {
     dispatch(openEditRecordModal(tableId));
   };
 
-  /**
-   * JSX
-   */
   return (
     <button type="button" className="btn btn--link" onClick={clickHandler}>
       <PlusCircleFilled />

@@ -10,15 +10,16 @@ import { useDispatch } from "react-redux";
 import {
   openEditRecordModal,
   deleteTableRecord,
+  deleteTableCloneRecord,
 } from "../../../actions/creators";
 
 /**
  * Typings
  */
-import { TableData } from "../../../features/tables/tablesModel";
+import { TableData } from "../../../types/tables";
 
 type TProps = {
-  tableId: string;
+  tableId?: string;
   rowId: string;
   data: Record<string, TableData>;
 };
@@ -27,28 +28,20 @@ type TProps = {
  * Expo
  */
 const TableRowActions: React.FC<TProps> = ({ tableId, rowId, data }) => {
-  /**
-   * Redux dispatch
-   */
   const dispatch = useDispatch();
 
-  /**
-   * Edit row data handler
-   */
   const handleEditRow = () => {
-    dispatch(openEditRecordModal(tableId, rowId, data[rowId]));
+    dispatch(openEditRecordModal(rowId, data[rowId], tableId));
   };
 
-  /**
-   * Delete row data handler
-   */
   const handleDelete = () => {
-    dispatch(deleteTableRecord(tableId, rowId));
+    if (tableId) {
+      dispatch(deleteTableCloneRecord(tableId, rowId));
+    } else {
+      dispatch(deleteTableRecord(rowId));
+    }
   };
 
-  /**
-   * JSX
-   */
   return (
     <div className={"table-actions"}>
       {/* EDIT ROW */}

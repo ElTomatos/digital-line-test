@@ -11,18 +11,15 @@ import TableRowActions from "../TableRowActions";
 /**
  * Typings
  */
-import { TableData } from "../../../features/tables/tablesModel";
+import { TableData } from "../../../types/tables";
 import { TColumn } from "../index";
 
 type TProps = {
   data: Record<string, TableData>;
   columns: TColumn[];
-  tableId: string;
+  tableId?: string;
 };
 
-/**
- * Expo
- */
 const TableBody: React.FC<TProps> = ({ data, columns, tableId }) => (
   <tbody className={"table__body"}>
     {Object.keys(data).map((id) => (

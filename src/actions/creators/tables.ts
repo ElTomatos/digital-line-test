@@ -6,16 +6,16 @@ import { types } from "../types/tables";
 /**
  * Typings
  */
-import { TableData } from "../../features/tables/tablesModel";
-import { createDefaultTableRowData } from "../../features/tables/tablesReducer";
+import { TableData } from "../../types/tables";
+import { createDefaultTableRowData } from "../../utils";
 
 /**
  * Open row config modal
  */
 export const openEditRecordModal = (
-  tableId: string,
   rowId: string | null = null,
-  data: TableData = createDefaultTableRowData()
+  data: TableData = createDefaultTableRowData(),
+  tableId?: string
 ) =>
   ({
     type: types.OPEN_EDIT_MODAL,
@@ -31,31 +31,49 @@ export const closeEditRecordModal = () =>
 /**
  * Add table record
  */
-export const addTableRecord = (tableId: string, data: TableData) =>
+export const addTableRecord = (data: TableData) =>
   ({
     type: types.ADD_TABLE_RECORD,
-    payload: { tableId, data },
+    payload: { data },
   } as const);
 
 /**
  * Edit table record
  */
-export const editTableRecord = (
+export const editTableRecord = (rowId: string, data: TableData) =>
+  ({
+    type: types.EDIT_TABLE_RECORD,
+    payload: { rowId, data },
+  } as const);
+
+/**
+ * Edit clone table record
+ */
+export const editTableCloneRecord = (
   tableId: string,
   rowId: string,
   data: TableData
 ) =>
   ({
-    type: types.EDIT_TABLE_RECORD,
+    type: types.EDIT_TABLE_CLONE_RECORD,
     payload: { tableId, rowId, data },
   } as const);
 
 /**
  * Delete table record
  */
-export const deleteTableRecord = (tableId: string, rowId: string) =>
+export const deleteTableRecord = (rowId: string) =>
   ({
     type: types.DELETE_TABLE_RECORD,
+    payload: { rowId },
+  } as const);
+
+/**
+ * Delete table clone record
+ */
+export const deleteTableCloneRecord = (tableId: string, rowId: string) =>
+  ({
+    type: types.DELETE_TABLE_CLONE_RECORD,
     payload: { tableId, rowId },
   } as const);
 

@@ -1,10 +1,7 @@
 /**
  * Reducer
  */
-import {
-  tablesReducer,
-  initialState,
-} from "../../../features/tables/tablesReducer";
+import { tablesReducer, initialState } from "../../reducers/tablesReducer";
 
 /**
  * Actions
@@ -17,13 +14,14 @@ import {
   deleteTableRecord,
   copyTable,
   deleteTable,
-} from "../../../actions/creators";
+  editTableCloneRecord,
+  deleteTableCloneRecord,
+} from "../../actions/creators";
 
 /**
  * Sample data
  */
 const sampleRowData = {
-  id: "id",
   name: "John",
   surname: "Doe",
   age: "67",
@@ -32,7 +30,8 @@ const sampleRowData = {
 
 const stateWithData = {
   ...initialState,
-  list: [{ id: "id", data: [sampleRowData] }],
+  data: { id: sampleRowData },
+  clones: { table: { id: sampleRowData } },
 };
 
 /**
@@ -68,22 +67,21 @@ describe("tables reducer", () => {
   it("should correctly set modal data", () => {
     const current = tablesReducer(
       initialState,
-      openEditRecordModal("some table id", "some row id", sampleRowData)
+      openEditRecordModal("some row id", sampleRowData)
     );
 
     expect(current.modal.data).toEqual(sampleRowData);
   });
 
   it("should handle add row action", () => {
-    const initialLength = initialState.list[0].data.length;
+    const initialLength = Object.keys(initialState.data).length;
 
-    const current = tablesReducer(
-      initialState,
-      addTableRecord(initialState.list[0].id, sampleRowData)
+    const current = tablesReducer(initialState, addTableRecord(sampleRowData));
+
+    expect(Object.keys(Object.keys(current.data)).length).toBe(
+      initialLength + 1
     );
-
-    expect(current.list[0].data.length).toBe(initialLength + 1);
-    expect(current.list[0].data[0]).toEqual(sampleRowData);
+    expect(Object.values(current.data)[0]).toEqual(sampleRowData);
   });
 
   it("should handle edit row action", () => {
@@ -97,37 +95,56 @@ describe("tables reducer", () => {
 
     const current = tablesReducer(
       stateWithData,
-      editTableRecord("id", sampleRowData.id, newRecord)
+      editTableRecord("id", newRecord)
     );
 
-    expect(current.list[0].data[0]).toEqual(newRecord);
+    expect(current.data.id).toEqual(newRecord);
+  });
+
+  it("should handle edit clone table row action", () => {
+    const newRecord = {
+      id: "new id",
+      name: "Will",
+      surname: "Smith",
+      age: "89",
+      city: "Saint Petersburg",
+    };
+
+    const current = tablesReducer(
+      stateWithData,
+      editTableCloneRecord("table", "id", newRecord)
+    );
+
+    expect(current.clones.table.id).toEqual(newRecord);
   });
 
   it("should handle delete row action", () => {
+    const current = tablesReducer(stateWithData, deleteTableRecord("id"));
+
+    expect(Object.keys(current.data).length).toEqual(0);
+  });
+
+  it("should handle delete clone table row action", () => {
     const current = tablesReducer(
       stateWithData,
-      deleteTableRecord("id", sampleRowData.id)
+      deleteTableCloneRecord("table", "id")
     );
 
-    expect(current.list[0].data.length).toEqual(0);
+    expect(Object.keys(current.clones.table).length).toEqual(0);
   });
 
   it("should handle copy table action", () => {
     const current = tablesReducer(
-      initialState,
-      copyTable(initialState.list[0].data)
+      stateWithData,
+      copyTable(stateWithData.data)
     );
-
-    expect(current.list.length).toEqual(2);
-    expect(current.list[1].data).toEqual(current.list[0].data);
+    expect(Object.keys(current.clones).length).toEqual(2);
+    expect(Object.values(current.clones)[0]).toEqual(current.data);
   });
 
   it("should handle delete table action", () => {
-    const current = tablesReducer(
-      initialState,
-      deleteTable(initialState.list[0].id)
-    );
+    const current = tablesReducer(stateWithData, deleteTable("table"));
 
-    expect(current.list.length).toEqual(0);
+    expect(Object.keys(current.clones).length).toEqual(0);
   });
 });

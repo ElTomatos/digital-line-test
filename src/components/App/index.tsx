@@ -4,15 +4,15 @@
 import React from "react";
 
 /**
+ * Store
+ */
+import { useSelector } from "../../store/hooks";
+
+/**
  * Components
  */
 import Table from "../Table";
 import EditRecordModal from "../EditRecordModal";
-
-/**
- * Store
- */
-import { useSelector } from "../../store/hooks";
 
 /**
  * Config
@@ -29,27 +29,20 @@ import { tablesSelector } from "../../selectors";
  */
 type TProps = {};
 
-/**
- * Expo
- */
 const App: React.FC<TProps> = () => {
-  const { list, modal } = useSelector(tablesSelector);
+  const { data, clones, modal } = useSelector(tablesSelector);
 
-  /**
-   * JSX
-   */
   return (
     <div>
-      {list.map((table, index) => {
-        const isFirst = index === 0;
+      <Table columns={_defaultTableColumns} data={data} isClone={false} />
+      {Object.keys(clones).map((id) => {
         return (
           <Table
             columns={_defaultTableColumns}
-            data={table.data}
-            key={table.id}
-            id={table.id}
-            canFill={isFirst}
-            canDelete={!isFirst}
+            data={clones[id]}
+            key={id}
+            id={id}
+            isClone
           />
         );
       })}

@@ -16,12 +16,9 @@ import { TColumn } from "../index";
 type TProps = {
   columns: TColumn[];
   canFill: boolean;
-  tableId: string;
+  tableId?: string;
 };
 
-/**
- * Expo
- */
 const TableHead: React.FC<TProps> = ({ columns, canFill, tableId }) => (
   <thead className="table__head">
     <tr className="table__head-row">

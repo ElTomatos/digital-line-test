@@ -22,27 +22,15 @@ type TProps = {
   isOpen: boolean;
 };
 
-/**
- * Expo
- */
 Modal.setAppElement("#root");
 
 const EditRecordModal: React.FC<TProps> = ({ isOpen }) => {
-  /**
-   * Redux dispatch
-   */
   const dispatch = useDispatch();
 
-  /**
-   * Close handler
-   */
   const handleClose = () => {
     dispatch(closeEditRecordModal());
   };
 
-  /**
-   * JSX
-   */
   return (
     <Modal isOpen={isOpen} onRequestClose={handleClose}>
       <EditRecordForm />

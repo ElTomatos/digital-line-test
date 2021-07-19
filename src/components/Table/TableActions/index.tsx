@@ -12,40 +12,27 @@ import { copyTable, deleteTable } from "../../../actions/creators";
 /**
  * Typings
  */
-import { TableData } from "../../../features/tables/tablesModel";
+import { TableData } from "../../../types/tables";
 
 type TProps = {
   canDelete: boolean;
   data: Record<string, TableData>;
-  tableId: string;
+  tableId?: string;
 };
 
-/**
- * Expo
- */
 const TableActions: React.FC<TProps> = ({ canDelete, data, tableId }) => {
-  /**
-   * Redux dispatch
-   */
   const dispatch = useDispatch();
 
-  /**
-   * Handle copy table
-   */
   const handleCopy = () => {
     dispatch(copyTable(data));
   };
 
-  /**
-   * Handle delete table
-   */
   const handleDelete = () => {
-    dispatch(deleteTable(tableId));
+    if (tableId) {
+      dispatch(deleteTable(tableId));
+    }
   };
 
-  /**
-   * JSX
-   */
   return (
     <div className="table__actions">
       {/* COPY TABLE */}

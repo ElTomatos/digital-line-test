@@ -13,7 +13,7 @@ import TableActions from "./TableActions";
 /**
  * Typings
  */
-import { TableData } from "../../features/tables/tablesModel";
+import { TableData } from "../../types/tables";
 
 export type TColumn = {
   accessor: keyof TableData;
@@ -21,21 +21,17 @@ export type TColumn = {
 };
 
 type TProps = {
-  id: string;
   columns: TColumn[];
   data: Record<string, TableData>;
-  canFill: boolean;
-  canDelete: boolean;
+  isClone: boolean;
+  id?: string;
 };
 
-/**
- * Expo
- */
-const Table: React.FC<TProps> = ({ columns, data, id, canFill, canDelete }) => (
+const Table: React.FC<TProps> = ({ columns, data, id, isClone }) => (
   <>
-    <TableActions canDelete={canDelete} data={data} tableId={id} />
+    <TableActions canDelete={isClone} data={data} tableId={id} />
     <table className="table">
-      <TableHead columns={columns} canFill={canFill} tableId={id} />
+      <TableHead columns={columns} canFill={!isClone} tableId={id} />
       <TableBody columns={columns} data={data} tableId={id} />
     </table>
   </>

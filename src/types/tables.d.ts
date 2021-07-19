@@ -12,9 +12,13 @@ type Table = {
 
 type TModal = {
   isOpen: boolean;
-  tableId: string;
+  tableId?: string;
   rowId: string | null;
   data: TableData;
 };
 
-export type TablesModel = { list: Table[]; modal: TModal };
+export type TablesModel = {
+  data: Record<string, TableData>;
+  clones: Record<string, Record<string, TableData>>;
+  modal: TModal;
+};

@@ -21,23 +21,25 @@ import TableBody from "../../../components/Table/TableBody";
 import { _defaultTableColumns } from "../../../config/_defaultTableColumns";
 
 /**
+ * Typings
+ */
+import { TableData } from "../../../types/tables";
+
+/**
  * Data
  */
-
 const createData = (length: number) => {
-  const arr = [];
+  const result: Record<string, TableData> = {};
   for (let i = 0; i < length; i++) {
-    const row = {
-      id: v4(),
+    result[v4()] = {
       name: "name",
       surname: "surname",
       age: "77",
       city: "17",
     };
-    arr.push(row);
   }
 
-  return arr;
+  return result;
 };
 
 /**
