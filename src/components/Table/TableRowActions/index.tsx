@@ -20,7 +20,7 @@ import { TableData } from "../../../features/tables/tablesModel";
 type TProps = {
   tableId: string;
   rowId: string;
-  data: TableData;
+  data: Record<string, TableData>;
 };
 
 /**
@@ -36,7 +36,7 @@ const TableRowActions: React.FC<TProps> = ({ tableId, rowId, data }) => {
    * Edit row data handler
    */
   const handleEditRow = () => {
-    dispatch(openEditRecordModal(tableId, rowId, data));
+    dispatch(openEditRecordModal(tableId, rowId, data[rowId]));
   };
 
   /**

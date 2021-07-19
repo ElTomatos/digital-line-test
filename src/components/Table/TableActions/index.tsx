@@ -16,7 +16,7 @@ import { TableData } from "../../../features/tables/tablesModel";
 
 type TProps = {
   canDelete: boolean;
-  data: TableData[];
+  data: Record<string, TableData>;
   tableId: string;
 };
 

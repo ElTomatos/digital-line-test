@@ -17,6 +17,11 @@ import { addTableRecord, editTableRecord } from "../../actions/creators";
 import { createDefaultTableRowData } from "../../features/tables/tablesReducer";
 
 /**
+ * Selectors
+ */
+import { tablesModalSelector } from "../../selectors";
+
+/**
  * Typings
  */
 import { TableData } from "../../features/tables/tablesModel";
@@ -43,7 +48,7 @@ const EditRecordForm: React.FC<TProps> = () => {
   /**
    * Redux state selector
    */
-  const { data, rowId, tableId } = useSelector((state) => state.tables.modal);
+  const { data, rowId, tableId } = useSelector(tablesModalSelector);
 
   /**
    * Redux dispatch

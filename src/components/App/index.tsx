@@ -20,6 +20,11 @@ import { useSelector } from "../../store/hooks";
 import { _defaultTableColumns } from "../../config/_defaultTableColumns";
 
 /**
+ * Selectors
+ */
+import { tablesSelector } from "../../selectors";
+
+/**
  * Typings
  */
 type TProps = {};
@@ -28,7 +33,7 @@ type TProps = {};
  * Expo
  */
 const App: React.FC<TProps> = () => {
-  const { list, modal } = useSelector((state) => state.tables);
+  const { list, modal } = useSelector(tablesSelector);
 
   /**
    * JSX

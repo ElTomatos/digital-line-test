@@ -62,7 +62,7 @@ export const deleteTableRecord = (tableId: string, rowId: string) =>
 /**
  * Create new table from coping
  */
-export const copyTable = (tableData: TableData[]) =>
+export const copyTable = (tableData: Record<string, TableData>) =>
   ({
     type: types.COPY_TABLE,
     payload: { tableData },

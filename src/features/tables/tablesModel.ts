@@ -3,12 +3,11 @@ export type TableData = {
   surname: string;
   age: string;
   city: string;
-  id: string;
 };
 
 type Table = {
   id: string;
-  data: TableData[];
+  data: Record<string, TableData>;
 };
 
 type TModal = {

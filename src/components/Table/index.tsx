@@ -16,14 +16,14 @@ import TableActions from "./TableActions";
 import { TableData } from "../../features/tables/tablesModel";
 
 export type TColumn = {
-  accessor: keyof Omit<TableData, "id">;
+  accessor: keyof TableData;
   title: string;
 };
 
 type TProps = {
   id: string;
   columns: TColumn[];
-  data: TableData[];
+  data: Record<string, TableData>;
   canFill: boolean;
   canDelete: boolean;
 };

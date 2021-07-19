@@ -18,20 +18,19 @@ export const createDefaultTableRowData = (): TableData => ({
   surname: "",
   age: "",
   city: "",
-  id: v4(),
 });
 
 export const initialState: TablesModel = {
   list: [
     {
       id: v4(),
-      data: [],
+      data: {},
     },
   ],
   modal: {
     isOpen: false,
     tableId: "",
-    rowId: null,
+    rowId: v4(),
     data: createDefaultTableRowData(),
   },
 };
@@ -66,10 +65,9 @@ export const tablesReducer: CommonReducer<TablesModel> = (
 
     case types.ADD_TABLE_RECORD: {
       const { tableId, data } = action.payload;
-
       const updatedList = state.list.map((table) => {
         if (table.id === tableId) {
-          return { ...table, data: [...table.data, data] };
+          return { ...table, data: { ...table.data, [v4()]: data } };
         }
 
         return table;
@@ -87,13 +85,7 @@ export const tablesReducer: CommonReducer<TablesModel> = (
 
       const updatedList = state.list.map((table) => {
         if (table.id === tableId) {
-          const updatedData = table.data.map((row) => {
-            if (row.id === rowId) {
-              return data;
-            }
-
-            return row;
-          });
+          const updatedData = { ...table.data, [rowId]: data };
 
           return { ...table, data: updatedData };
         }
@@ -113,7 +105,8 @@ export const tablesReducer: CommonReducer<TablesModel> = (
 
       const updatedList = state.list.map((table) => {
         if (table.id === tableId) {
-          const updatedData = table.data.filter((row) => row.id !== rowId);
+          const updatedData = { ...table.data };
+          delete updatedData[rowId];
           return { ...table, data: updatedData };
         }
 
