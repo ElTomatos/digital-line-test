@@ -50,8 +50,6 @@ import { TableData } from "../../types/tables";
 
 type TProps = {};
 
-const options = ["Chocolate", "Strawberry", "Vanilla"];
-
 const EditRecordForm: React.FC<TProps> = () => {
   const [formData, setFormData] = useState<TableData>(
     createDefaultTableRowData()

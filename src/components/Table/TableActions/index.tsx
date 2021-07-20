@@ -49,6 +49,7 @@ const TableActions: React.FC<TProps> = ({ canDelete, data, tableId }) => {
           className="btn btn--link danger-color table__actions-close"
           type="button"
           onClick={handleDelete}
+          data-testid="delete-table-btn"
         >
           <CloseOutlined />
         </button>

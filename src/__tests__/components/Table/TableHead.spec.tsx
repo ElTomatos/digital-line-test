@@ -27,29 +27,21 @@ describe("TableHead", () => {
     render(
       <Provider store={configureStore()}>
         <table>
-          <TableHead
-            columns={_defaultTableColumns}
-            canFill={false}
-            tableId={"ID"}
-          />
+          <TableHead columns={_defaultTableColumns} canFill={false} />
         </table>
       </Provider>
     );
 
     const tableHead = screen.queryAllByRole("columnheader");
 
-    expect(tableHead).toHaveLength(_defaultTableColumns.length);
+    expect(tableHead).toHaveLength(_defaultTableColumns.length + 1); // action column
   });
 
   it("should render action button if canFill prop true", () => {
     render(
       <Provider store={configureStore()}>
         <table>
-          <TableHead
-            columns={_defaultTableColumns}
-            canFill={true}
-            tableId={"ID"}
-          />
+          <TableHead columns={_defaultTableColumns} canFill={true} />
         </table>
       </Provider>
     );
@@ -63,11 +55,7 @@ describe("TableHead", () => {
     render(
       <Provider store={configureStore()}>
         <table>
-          <TableHead
-            columns={_defaultTableColumns}
-            canFill={false}
-            tableId={"ID"}
-          />
+          <TableHead columns={_defaultTableColumns} canFill={false} />
         </table>
       </Provider>
     );

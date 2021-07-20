@@ -21,11 +21,11 @@ describe("TableActions", () => {
   it("should render delete button if canDelete prop true", () => {
     render(
       <Provider store={configureStore()}>
-        <TableActions canDelete={true} data={[]} tableId={"ID"} />
+        <TableActions canDelete={true} data={{}} tableId={"ID"} />
       </Provider>
     );
 
-    const deleteButton = screen.queryByRole("button", { name: "delete" });
+    const deleteButton = screen.getByTestId("delete-table-btn");
 
     expect(deleteButton).toBeInTheDocument();
   });
@@ -33,7 +33,7 @@ describe("TableActions", () => {
   it("should not render delete button if canDelete prop false", () => {
     render(
       <Provider store={configureStore()}>
-        <TableActions canDelete={false} data={[]} tableId={"ID"} />
+        <TableActions canDelete={false} data={{}} tableId={"ID"} />
       </Provider>
     );
 
