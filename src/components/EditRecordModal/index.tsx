@@ -51,7 +51,7 @@ const EditRecordModal: React.FC<TProps> = ({ isOpen }) => {
   };
 
   const afterCloseHandler = () => {
-    dispatch(resetEditForm());
+    dispatch(resetEditForm()); // отдельно ресечу форму по окончании анимации, чтобы она не была пустой при закрытии
   };
 
   return (
