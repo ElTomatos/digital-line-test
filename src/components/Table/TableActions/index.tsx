@@ -4,6 +4,11 @@
 import React from "react";
 
 /**
+ * Icons
+ */
+import CloseOutlined from "@ant-design/icons/CloseOutlined";
+
+/**
  * Store
  */
 import { useDispatch } from "react-redux";
@@ -28,9 +33,7 @@ const TableActions: React.FC<TProps> = ({ canDelete, data, tableId }) => {
   };
 
   const handleDelete = () => {
-    if (tableId) {
-      dispatch(deleteTable(tableId));
-    }
+    dispatch(deleteTable(tableId!));
   };
 
   return (
@@ -43,11 +46,11 @@ const TableActions: React.FC<TProps> = ({ canDelete, data, tableId }) => {
       {/* DELETE TABLE */}
       {canDelete && (
         <button
-          className="btn btn--link btn--danger"
+          className="btn btn--link danger-color table__actions-close"
           type="button"
           onClick={handleDelete}
         >
-          delete
+          <CloseOutlined />
         </button>
       )}
     </div>

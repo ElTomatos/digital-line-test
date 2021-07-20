@@ -1,7 +1,7 @@
 /**
  * Vendors
  */
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 /**
  * Components
@@ -13,10 +13,11 @@ import Input from "../Input";
 /**
  * Store
  */
-import { useDispatch } from "react-redux";
+import { batch, useDispatch } from "react-redux";
 import { useSelector } from "../../store/hooks";
 import {
   addTableRecord,
+  closeEditRecordModal,
   editTableCloneRecord,
   editTableRecord,
 } from "../../actions/creators";
@@ -26,10 +27,10 @@ import {
  */
 import {
   createDefaultTableRowData,
-  validateEditRecordForm,
+  errorMessages,
   isNumberFieldValid,
   isTextFieldValid,
-  errorMessages,
+  validateEditRecordForm,
 } from "../../utils";
 
 /**
@@ -78,12 +79,21 @@ const EditRecordForm: React.FC<TProps> = () => {
 
     if (rowId) {
       if (tableId) {
-        dispatch(editTableCloneRecord(tableId, rowId, formData));
+        batch(() => {
+          dispatch(closeEditRecordModal());
+          dispatch(editTableCloneRecord(tableId, rowId, formData));
+        });
       } else {
-        dispatch(editTableRecord(rowId, formData));
+        batch(() => {
+          dispatch(closeEditRecordModal());
+          dispatch(editTableRecord(rowId, formData));
+        });
       }
     } else {
-      dispatch(addTableRecord(formData));
+      batch(() => {
+        dispatch(closeEditRecordModal());
+        dispatch(addTableRecord(formData));
+      });
     }
   };
 
@@ -97,9 +107,16 @@ const EditRecordForm: React.FC<TProps> = () => {
   };
 
   const deleteError = (name: keyof TableData) => {
-    const errorsCopy = { ...errors };
-    delete errorsCopy[name];
-    setErrors(errorsCopy);
+    const updatedErrors = Object.keys(errors).reduce((acc, k) => {
+      if (k === name) {
+        return acc;
+      }
+
+      acc[k] = errors[k];
+
+      return acc;
+    }, {} as Record<string, string>);
+    setErrors(updatedErrors);
   };
 
   const handleBlur = (name: keyof TableData, isNumeric?: boolean) => {
@@ -173,8 +190,8 @@ const EditRecordForm: React.FC<TProps> = () => {
       </FormItem>
 
       <div className="form__item">
-        <button className="btn btn--primary btn--block" type="submit">
-          Submit
+        <button className="btn btn--primary btn--block btn--xl" type="submit">
+          {rowId ? "Edit" : "Add"}
         </button>
       </div>
     </form>

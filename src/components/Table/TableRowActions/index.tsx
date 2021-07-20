@@ -43,11 +43,11 @@ const TableRowActions: React.FC<TProps> = ({ tableId, rowId, data }) => {
   };
 
   return (
-    <div className={"table-actions"}>
+    <div className="table__row-actions">
       {/* EDIT ROW */}
       <button
-        type={"button"}
-        className={"btn btn--link bnt--primary"}
+        type="button"
+        className="btn btn--link primary-color"
         onClick={handleEditRow}
       >
         Edit
@@ -55,8 +55,8 @@ const TableRowActions: React.FC<TProps> = ({ tableId, rowId, data }) => {
 
       {/* DELETE ROW */}
       <button
-        type={"button"}
-        className={"btn btn--link bnt--danger"}
+        type="button"
+        className="btn btn--link danger-color"
         onClick={handleDelete}
       >
         Delete

@@ -29,6 +29,11 @@ export const closeEditRecordModal = () =>
   ({ type: types.CLOSE_EDIT_MODAL } as const);
 
 /**
+ * Reset edit form
+ */
+export const resetEditForm = () => ({ type: types.RESET_EDIT_FORM } as const);
+
+/**
  * Add table record
  */
 export const addTableRecord = (data: TableData) =>

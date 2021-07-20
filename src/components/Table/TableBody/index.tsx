@@ -21,13 +21,15 @@ type TProps = {
 };
 
 const TableBody: React.FC<TProps> = ({ data, columns, tableId }) => (
-  <tbody className={"table__body"}>
+  <tbody className="table__body">
     {Object.keys(data).map((id) => (
-      <tr key={id}>
+      <tr className="table__row" key={id}>
         {columns.map(({ accessor }) => (
-          <td key={accessor}>{data[id][accessor]}</td>
+          <td className="table__cell" key={accessor}>
+            {data[id][accessor]}
+          </td>
         ))}
-        <td>
+        <td className="table__cell">
           <TableRowActions tableId={tableId} rowId={id} data={data} />
         </td>
       </tr>

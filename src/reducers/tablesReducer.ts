@@ -11,7 +11,7 @@ import { createDefaultTableRowData } from "../utils";
 /**
  * Typings
  */
-import { TablesModel } from "../types/tables";
+import { TableData, TablesModel } from "../types/tables";
 import { CommonReducer } from "../types/app";
 import { types } from "../actions/types/tables";
 
@@ -24,7 +24,7 @@ export const initialState: TablesModel = {
   modal: {
     isOpen: false,
     tableId: "",
-    rowId: v4(),
+    rowId: "",
     data: createDefaultTableRowData(),
   },
 };
@@ -53,6 +53,16 @@ export const tablesReducer: CommonReducer<TablesModel> = (
     case types.CLOSE_EDIT_MODAL: {
       return {
         ...state,
+        modal: {
+          ...state.modal,
+          isOpen: false,
+        },
+      };
+    }
+
+    case types.RESET_EDIT_FORM: {
+      return {
+        ...state,
         modal: initialState.modal,
       };
     }
@@ -63,7 +73,6 @@ export const tablesReducer: CommonReducer<TablesModel> = (
       return {
         ...state,
         data: { ...state.data, [v4()]: data },
-        modal: initialState.modal,
       };
     }
 
@@ -76,7 +85,6 @@ export const tablesReducer: CommonReducer<TablesModel> = (
           ...state.data,
           [rowId]: data,
         },
-        modal: initialState.modal,
       };
     }
 
@@ -89,16 +97,19 @@ export const tablesReducer: CommonReducer<TablesModel> = (
           ...state.clones,
           [tableId]: { ...state.clones[tableId], [rowId]: data },
         },
-        modal: initialState.modal,
       };
     }
 
     case types.DELETE_TABLE_RECORD: {
       const { rowId } = action.payload;
 
-      const updatedList = { ...state.data };
-
-      delete updatedList[rowId];
+      const updatedList = Object.keys(state.data).reduce((acc, k) => {
+        if (k === rowId) {
+          return acc;
+        }
+        acc[k] = state.data[k];
+        return acc;
+      }, {} as Record<string, TableData>);
 
       return {
         ...state,
@@ -109,9 +120,16 @@ export const tablesReducer: CommonReducer<TablesModel> = (
     case types.DELETE_TABLE_CLONE_RECORD: {
       const { tableId, rowId } = action.payload;
 
-      const updatedList = { ...state.clones[tableId] };
-
-      delete updatedList[rowId];
+      const updatedList = Object.keys(state.clones[tableId]).reduce(
+        (acc, k) => {
+          if (k === rowId) {
+            return acc;
+          }
+          acc[k] = state.clones[tableId][k];
+          return acc;
+        },
+        {} as Record<string, TableData>
+      );
 
       return {
         ...state,
@@ -133,9 +151,13 @@ export const tablesReducer: CommonReducer<TablesModel> = (
     case types.DELETE_TABLE: {
       const { tableId } = action.payload;
 
-      const updatedList = { ...state.clones };
-
-      delete updatedList[tableId];
+      const updatedList = Object.keys(state.clones).reduce((acc, k) => {
+        if (k === tableId) {
+          return acc;
+        }
+        acc[k] = state.clones[k];
+        return acc;
+      }, {} as Record<string, Record<string, TableData>>);
 
       return {
         ...state,

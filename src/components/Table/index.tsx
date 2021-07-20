@@ -9,6 +9,7 @@ import React from "react";
 import TableHead from "./TableHead";
 import TableBody from "./TableBody";
 import TableActions from "./TableActions";
+import TableEmpty from "./TableEmpty";
 
 /**
  * Typings
@@ -30,10 +31,16 @@ type TProps = {
 const Table: React.FC<TProps> = ({ columns, data, id, isClone }) => (
   <>
     <TableActions canDelete={isClone} data={data} tableId={id} />
-    <table className="table">
-      <TableHead columns={columns} canFill={!isClone} tableId={id} />
-      <TableBody columns={columns} data={data} tableId={id} />
-    </table>
+    <div className="table-responsive">
+      <table className="table">
+        <TableHead columns={columns} canFill={!isClone} />
+        {Object.keys(data).length > 0 ? (
+          <TableBody columns={columns} data={data} tableId={id} />
+        ) : (
+          <TableEmpty colSpan={columns.length + 1} canFill={!isClone} />
+        )}
+      </table>
+    </div>
   </>
 );
 

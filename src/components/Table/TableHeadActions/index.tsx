@@ -17,13 +17,13 @@ import PlusCircleFilled from "@ant-design/icons/PlusCircleFilled";
 /**
  * Typings
  */
-type TProps = { tableId?: string };
+type TProps = {};
 
-const TableHeadActions: React.FC<TProps> = ({ tableId }) => {
+const TableHeadActions: React.FC<TProps> = () => {
   const dispatch = useDispatch();
 
   const clickHandler = () => {
-    dispatch(openEditRecordModal(tableId));
+    dispatch(openEditRecordModal());
   };
 
   return (

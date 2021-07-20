@@ -8,7 +8,7 @@ import Modal from "react-modal";
  * Store
  */
 import { useDispatch } from "react-redux";
-import { closeEditRecordModal } from "../../actions/creators";
+import { closeEditRecordModal, resetEditForm } from "../../actions/creators";
 
 /**
  * Components
@@ -50,10 +50,15 @@ const EditRecordModal: React.FC<TProps> = ({ isOpen }) => {
     dispatch(closeEditRecordModal());
   };
 
+  const afterCloseHandler = () => {
+    dispatch(resetEditForm());
+  };
+
   return (
     <Modal
       isOpen={isOpen}
       onRequestClose={handleClose}
+      onAfterClose={afterCloseHandler}
       style={modalStyles}
       closeTimeoutMS={300}
     >

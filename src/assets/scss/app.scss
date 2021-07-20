@@ -1,9 +1,11 @@
 // Base
 @import "base/variables";
 @import "base/base";
+@import "base/helpers";
 
 // Components
 @import "components/select";
 @import "components/modal";
 @import "components/forms";
 @import "components/buttons";
+@import "components/table";
