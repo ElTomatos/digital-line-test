@@ -1,0 +1,49 @@
+.form__control {
+  width: 100%;
+  padding: 0 0.875rem;
+  height: 2.625rem;
+  line-height: 2.625rem;
+  border: 1px solid $gray-100;
+  transition: border-color .3s ease-in-out;
+  border-radius: 4px;
+  color: $text-color;
+  font-size: 12px;
+
+  &--select {
+    padding: 0;
+  }
+
+  &:focus {
+    outline: 0;
+    border-color: $primary-color;
+  }
+
+  &::placeholder {
+    color: $gray-200;
+  }
+}
+
+.form__item {
+  position: relative;
+
+  &:not(:last-child) {
+    padding-bottom: 1rem;
+    margin-bottom: .5rem;
+  }
+
+  &.has-error {
+    .form__control {
+      border-color: $error-color;
+    }
+  }
+
+
+}
+
+.form__feedback {
+  font-size: .75rem;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  color: $error-color;
+}

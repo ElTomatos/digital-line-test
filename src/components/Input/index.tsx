@@ -13,6 +13,7 @@ type TProps = {
   onFocus: (name: keyof TableData) => void;
   name: string;
   value: string;
+  placeholder: string;
   isNumeric?: boolean;
 };
 
@@ -21,10 +22,11 @@ type TProps = {
  */
 const Input: React.FC<TProps> = ({
   onChange,
-  name,
-  value,
   onFocus,
   onBlur,
+  name,
+  value,
+  placeholder,
   isNumeric,
 }) => {
   const handleBlur = ({ target }: React.FocusEvent<HTMLInputElement>) => {
@@ -44,6 +46,7 @@ const Input: React.FC<TProps> = ({
       onFocus={handleFocus}
       name={name}
       value={value}
+      placeholder={placeholder}
       className="form__control form__control--text"
       autoComplete="off"
     />

@@ -38,6 +38,11 @@ import {
 import { tablesModalSelector } from "../../selectors";
 
 /**
+ * Config
+ */
+import { _cities } from "../../config/_cities";
+
+/**
  * Typings
  */
 import { TableData } from "../../types/tables";
@@ -121,6 +126,7 @@ const EditRecordForm: React.FC<TProps> = () => {
       <FormItem error={errors.name}>
         <Input
           name="name"
+          placeholder="Name"
           value={formData.name}
           onChange={handleChange}
           onBlur={handleBlur}
@@ -132,6 +138,7 @@ const EditRecordForm: React.FC<TProps> = () => {
       <FormItem error={errors.surname}>
         <Input
           name="surname"
+          placeholder="Surname"
           value={formData.surname}
           onChange={handleChange}
           onBlur={handleBlur}
@@ -143,6 +150,8 @@ const EditRecordForm: React.FC<TProps> = () => {
       <FormItem error={errors.age}>
         <Input
           name="age"
+          placeholder="Age"
+          isNumeric
           value={formData.age}
           onChange={handleChange}
           onBlur={handleBlur}
@@ -153,17 +162,20 @@ const EditRecordForm: React.FC<TProps> = () => {
       {/* CITY */}
       <FormItem error={errors.city}>
         <Select
+          placeholder="City"
+          name="city"
           onChange={handleCityChange}
           onBlur={handleBlur}
           onFocus={handleFocus}
           value={formData.city}
-          options={options}
-          name="city"
+          options={_cities}
         />
       </FormItem>
 
       <div className="form__item">
-        <button type="submit">Submit</button>
+        <button className="btn btn--primary btn--block" type="submit">
+          Submit
+        </button>
       </div>
     </form>
   );

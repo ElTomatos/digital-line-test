@@ -16,6 +16,7 @@ type TProps = {
   value: string | undefined;
   options: string[];
   name: keyof TableData;
+  placeholder: string;
 };
 
 /**
@@ -28,6 +29,7 @@ const Select: React.FC<TProps> = ({
   value,
   options,
   name,
+  placeholder,
 }) => {
   const handleBlur = () => {
     onBlur(name);
@@ -43,6 +45,9 @@ const Select: React.FC<TProps> = ({
       onFocus={handleFocus}
       onChange={onChange}
       value={value}
+      placeholder={placeholder}
+      className="form__control form__control--select"
+      showSearch
     >
       {options.map((option) => (
         <Option value={option} key={option}>

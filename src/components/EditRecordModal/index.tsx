@@ -16,6 +16,25 @@ import { closeEditRecordModal } from "../../actions/creators";
 import EditRecordForm from "../EditRecordForm";
 
 /**
+ * Styles
+ */
+const modalStyles = {
+  overlay: {
+    backgroundColor: "rgba(0, 0, 0, 0.35)",
+  },
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    width: "280px",
+    boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.15)",
+    borderRadius: "4px",
+  },
+};
+
+/**
  * Typings
  */
 type TProps = {
@@ -32,7 +51,12 @@ const EditRecordModal: React.FC<TProps> = ({ isOpen }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={handleClose}>
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={handleClose}
+      style={modalStyles}
+      closeTimeoutMS={300}
+    >
       <EditRecordForm />
     </Modal>
   );

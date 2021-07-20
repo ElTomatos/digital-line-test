@@ -1,0 +1,16 @@
+.ReactModal__Content {
+  transform: translateY(-100%) translateX(-50%);
+  transition: all .3s ease-in-out;
+  background: rgba(0,0,0,.70);
+  opacity: 0;
+}
+
+.ReactModal__Content--after-open {
+  opacity: 1;
+  transform: translateY(-50%) translateX(-50%);
+}
+
+.ReactModal__Content--before-close {
+  opacity: 0;
+  transform: translateY(-100%) translateX(-50%);
+}
