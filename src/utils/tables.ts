@@ -4,5 +4,5 @@ export const createDefaultTableRowData = (): TableData => ({
   name: "",
   surname: "",
   age: "",
-  city: "",
+  city: undefined,
 });

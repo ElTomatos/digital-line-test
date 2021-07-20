@@ -2,7 +2,7 @@ export type TableData = {
   name: string;
   surname: string;
   age: string;
-  city: string;
+  city: string | undefined;
 };
 
 type Table = {

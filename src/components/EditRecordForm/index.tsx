@@ -2,7 +2,13 @@
  * Vendors
  */
 import React, { useState, useEffect } from "react";
-import Select from "react-select";
+
+/**
+ * Components
+ */
+import FormItem from "../FormItem";
+import Select from "../Select";
+import Input from "../Input";
 
 /**
  * Store
@@ -16,9 +22,15 @@ import {
 } from "../../actions/creators";
 
 /**
- * Helpers
+ * Utils
  */
-import { createDefaultTableRowData } from "../../utils";
+import {
+  createDefaultTableRowData,
+  validateEditRecordForm,
+  isNumberFieldValid,
+  isTextFieldValid,
+  errorMessages,
+} from "../../utils";
 
 /**
  * Selectors
@@ -32,16 +44,14 @@ import { TableData } from "../../types/tables";
 
 type TProps = {};
 
-const options = [
-  { value: "chocolate", label: "Chocolate" },
-  { value: "strawberry", label: "Strawberry" },
-  { value: "vanilla", label: "Vanilla" },
-];
+const options = ["Chocolate", "Strawberry", "Vanilla"];
 
 const EditRecordForm: React.FC<TProps> = () => {
   const [formData, setFormData] = useState<TableData>(
     createDefaultTableRowData()
   );
+
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const { data, rowId, tableId } = useSelector(tablesModalSelector);
 
@@ -53,6 +63,14 @@ const EditRecordForm: React.FC<TProps> = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const errors = validateEditRecordForm(formData);
+
+    if (Object.keys(errors).length) {
+      setErrors(errors);
+      return;
+    }
+
     if (rowId) {
       if (tableId) {
         dispatch(editTableCloneRecord(tableId, rowId, formData));
@@ -69,50 +87,83 @@ const EditRecordForm: React.FC<TProps> = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleCityChange = (e: { value: string; label: string } | null) => {
-    const city = e ? e.value : "";
+  const handleCityChange = (city: string | undefined) => {
     setFormData({ ...formData, city });
+  };
+
+  const deleteError = (name: keyof TableData) => {
+    const errorsCopy = { ...errors };
+    delete errorsCopy[name];
+    setErrors(errorsCopy);
+  };
+
+  const handleBlur = (name: keyof TableData, isNumeric?: boolean) => {
+    const isValid = isNumeric
+      ? isNumberFieldValid(formData[name])
+      : isTextFieldValid(formData[name]);
+
+    if (errors[name] && isValid) {
+      deleteError(name);
+    } else if (!errors[name] && !isValid) {
+      setErrors({ ...errors, [name]: errorMessages[name] });
+    }
+  };
+
+  const handleFocus = (name: keyof TableData) => {
+    if (errors[name]) {
+      deleteError(name);
+    }
   };
 
   return (
     <form className="form" onSubmit={handleSubmit}>
-      <div className="form__item">
-        <input
+      {/* NAME */}
+      <FormItem error={errors.name}>
+        <Input
           name="name"
-          className="form__control form__control--text"
-          onChange={handleChange}
           value={formData.name}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          onFocus={handleFocus}
         />
-      </div>
+      </FormItem>
 
-      <div className="form__item">
-        <input
+      {/* SURNAME */}
+      <FormItem error={errors.surname}>
+        <Input
           name="surname"
-          className="form__control form__control--text"
-          onChange={handleChange}
           value={formData.surname}
-        />
-      </div>
-
-      <div className="form__item">
-        <input
-          name="age"
-          className="form__control form__control--text"
           onChange={handleChange}
+          onBlur={handleBlur}
+          onFocus={handleFocus}
+        />
+      </FormItem>
+
+      {/* AGE */}
+      <FormItem error={errors.age}>
+        <Input
+          name="age"
           value={formData.age}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          onFocus={handleFocus}
         />
-      </div>
+      </FormItem>
 
-      <div className="form__item">
+      {/* CITY */}
+      <FormItem error={errors.city}>
         <Select
-          options={options}
-          isClearable={false}
           onChange={handleCityChange}
+          onBlur={handleBlur}
+          onFocus={handleFocus}
+          value={formData.city}
+          options={options}
+          name="city"
         />
-      </div>
+      </FormItem>
 
       <div className="form__item">
-        <button type={"submit"}>Submit</button>
+        <button type="submit">Submit</button>
       </div>
     </form>
   );
